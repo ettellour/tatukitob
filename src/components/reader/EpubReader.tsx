@@ -131,7 +131,7 @@ export default function EpubReader({ bookUrl, bookId }: { bookUrl: string, bookI
             // Форсируем обновление счетчика
             const loc = rendition.currentLocation();
             if (loc) {
-              const idx = book.locations.locationFromCfi(loc.start.cfi);
+              const idx = book.locations.locationFromCfi((loc as any).start?.cfi);
               setCurrentPage(typeof idx === 'number' ? idx + 1 : 1);
             }
           }

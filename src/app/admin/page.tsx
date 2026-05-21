@@ -9,6 +9,8 @@ import { translations, Language } from '@/lib/i18n';
 interface Book {
   id: string;
   title: string;
+  titleUz?: string | null;
+  titleRu?: string | null;
   author: string;
   description: string | null;
   coverUrl: string | null;
@@ -71,7 +73,7 @@ export default function AdminPage() {
     setStatus(null);
   };
 
-  const startEdit = (book: Book & { titleUz?: string, titleRu?: string }) => {
+  const startEdit = (book: Book) => {
     setEditingId(book.id);
     setTitleUz(book.titleUz || '');
     setTitleRu(book.titleRu || '');
