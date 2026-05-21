@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), ui-serif, Georgia, serif;
+  
+  --color-background: #ffffff;
+  --color-foreground: #111827;
+  --color-surface: #f3f4f6;
+  --color-border: #e5e7eb;
+  --color-primary: #000000;
+  --color-primary-hover: #374151;
+  --color-muted: #6b7280;
+  
+  --color-dark-background: #111827;
+  --color-dark-foreground: #f9fafb;
+  --color-dark-surface: #1f2937;
+  --color-dark-border: #374151;
+  --color-dark-primary: #ffffff;
+  --color-dark-primary-hover: #d1d5db;
+  --color-dark-muted: #9ca3af;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  /* Стили body перенесены в layout.tsx для лучшей совместимости с Tailwind dark: */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .surface-card {
+    @apply bg-[var(--color-surface)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-border)] dark:border-[var(--color-dark-border)] rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] active:scale-[0.98] dark:bg-[var(--color-dark-primary)] dark:hover:bg-[var(--color-dark-primary-hover)] dark:text-gray-900 font-medium px-5 py-2.5 rounded-lg transition-all focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] dark:focus:ring-offset-[var(--color-dark-background)];
+  }
+
+  .nav-header {
+    @apply sticky top-0 w-full z-50 bg-[var(--color-surface)]/80 dark:bg-[var(--color-dark-surface)]/80 backdrop-blur-md border-b border-[var(--color-border)] dark:border-[var(--color-dark-border)];
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full border-[2px] border-transparent bg-clip-padding;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-600;
 }
