@@ -11,10 +11,10 @@ export async function GET(request: Request) {
   try {
     const whereClause = query ? {
       OR: [
-        { title: { contains: query, mode: 'insensitive' } },
-        { author: { contains: query, mode: 'insensitive' } },
-        { titleUz: { contains: query, mode: 'insensitive' } },
-        { titleRu: { contains: query, mode: 'insensitive' } },
+        { title: { contains: query, mode: 'insensitive' as const } },
+        { author: { contains: query, mode: 'insensitive' as const } },
+        { titleUz: { contains: query, mode: 'insensitive' as const } },
+        { titleRu: { contains: query, mode: 'insensitive' as const } },
       ]
     } : {};
 
