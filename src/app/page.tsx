@@ -237,7 +237,6 @@ export default function Home() {
           <div>&copy; 2026 UniLibrary</div>
           <div className="flex gap-8">
             <Link href="#">{t.about}</Link>
-            <Link href="/admin">{t.admin}</Link>
           </div>
         </div>
       </footer>
