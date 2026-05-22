@@ -1,10 +1,11 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 // epub.js требует window, загружаем только на клиенте
 const EpubReader = dynamic(() => import('@/components/reader/EpubReader'), { 
@@ -14,6 +15,18 @@ const EpubReader = dynamic(() => import('@/components/reader/EpubReader'), {
       <div className="flex flex-col items-center gap-4">
         <div className="w-10 h-10 border-4 border-t-transparent border-[#004B87] dark:border-white/40 rounded-full animate-spin" />
         <span className="text-sm font-serif italic opacity-50">Загрузка читалки...</span>
+      </div>
+    </div>
+  )
+});
+
+const PdfReader = dynamic(() => import('@/components/reader/PdfReader'), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[calc(100vh-3.5rem)] bg-[#FFFDF7] dark:bg-[#001B36] flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-10 h-10 border-4 border-t-transparent border-[#004B87] dark:border-white/40 rounded-full animate-spin" />
+        <span className="text-sm font-serif italic opacity-50">Загрузка PDF...</span>
       </div>
     </div>
   )
@@ -39,10 +52,20 @@ function ReaderContent() {
     );
   }
 
+  const isPdf = url.toLowerCase().includes('.pdf');
+
+  if (isPdf) {
+    return <PdfReader bookUrl={url} />;
+  }
+
   return <EpubReader bookUrl={url} bookId={id} />;
 }
 
 export default function ReaderPage() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   return (
     <div className="h-screen flex flex-col bg-[#FFFDF7] dark:bg-[#001B36] overflow-hidden">
       {/* Минималистичный тулбар */}
@@ -58,6 +81,15 @@ export default function ReaderPage() {
             UniLibrary.
           </span>
         </div>
+
+        {mounted && (
+          <button 
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="opacity-50 hover:opacity-100 transition-opacity p-2 -mr-2 text-[#004B87] dark:text-[#FDFCF8]"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        )}
       </header>
 
       {/* Читалка — занимает весь оставшийся экран */}
